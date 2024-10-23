@@ -1,0 +1,29 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}  # You can use a static value like 'username'
+        password: ${{ secrets.DOCKER_PAT }}
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/${{ github.repository }}:latest .
+
+    - name: Push Docker image to registry
+      run: |
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/${{ github.repository }}:latest
