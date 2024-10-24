@@ -47,8 +47,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_id }} .
+        docker build -t ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }} .
 
     - name: Push Docker image to registry
       run: |
-        docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_id }}
+        docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
