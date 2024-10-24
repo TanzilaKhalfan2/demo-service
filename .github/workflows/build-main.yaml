@@ -52,3 +52,8 @@ jobs:
     - name: Push Docker image to registry
       run: |
         docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
+    
+    - name: Install Helm
+        uses: azure/setup-helm@v4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
