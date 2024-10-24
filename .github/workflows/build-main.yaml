@@ -22,10 +22,10 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.CONTAINER_REGISTRY }}/${{ github.repository }}:latest .
+        docker build -t ${{ secrets.REGISTRY_NAME }}/${{ github.repository }}:latest .
 
     - name: Push Docker image to registry
       run: |
-        docker push ${{ secrets.CONTAINER_REGISTRY }}/${{ github.repository }}:latest
+        docker push ${{ secrets.REGISTRY_NAME }}/${{ github.repository }}:latest
 
         #for
