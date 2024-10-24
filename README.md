@@ -55,6 +55,6 @@ This project is a microservice for BMW, built using Flask and deployed using Hel
 7. **PORT Forward to get the application URL by running these commands:**
     
     ```sh
-    export SERVICE_PORT=$(kubectl get svc demo-bmw-svc --namespace default -o jsonpath="{.spec.ports[0].port}")
-    kubectl --namespace default port-forward service/demo-bmw-svc 5000:$SERVICE_PORT
+    export SERVICE_PORT=$(kubectl get svc demo-bmw-microservice --namespace default -o jsonpath="{.spec.ports[0].port}")
+    kubectl --namespace default port-forward service/demo-bmw-microservice 8080:$SERVICE_PORT
     ```
