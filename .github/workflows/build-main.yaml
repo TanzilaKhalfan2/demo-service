@@ -17,6 +17,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Extract repository name
+      id: vars
+      run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
@@ -25,10 +29,10 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.REGISTRY_NAME }}/${{ github.repository }}:latest .
+        docker build -t ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_id }} .
 
     - name: Push Docker image to registry
       run: |
-        docker push ${{ env.REGISTRY_NAME }}/${{ github.repository }}:latest
+        docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_id }}
 
         #for
