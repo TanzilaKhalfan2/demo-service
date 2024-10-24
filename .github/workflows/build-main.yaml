@@ -64,3 +64,8 @@ jobs:
     - name: Index Helm chart
       run: |
         helm repo index charts --url https://tanzilakhalfan2.github.io/demo-bmw-microservice/
+    
+    - name: List files
+      run: |
+        ls -l charts
+        cat charts/index.yaml
