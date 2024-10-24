@@ -36,4 +36,3 @@ def fetch_person(person_id):
         raise RuntimeError(
             f"Failed to fetch person with ID {person_id} from SWAPI"
             )
-
