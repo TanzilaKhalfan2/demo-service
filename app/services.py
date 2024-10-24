@@ -30,4 +30,4 @@ def fetch_person(person_id):
         return person
     except requests.exceptions.RequestException as e:
         log_error(e)
-        raise RuntimeError(f"Failed to fetch person with ID {person_id} from SWAPI")
+        raise RuntimeError(f"Failed to fetch person with ID {person_id} from SWAPI")
