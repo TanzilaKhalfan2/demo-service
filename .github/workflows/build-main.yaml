@@ -58,6 +58,5 @@ jobs:
     
     - name: Package Helm chart
       run: |
-        VERSION = ${{ github.run_number }}
-        
+        VERSION=${{ github.run_number }}
         helm package charts/${{ env.REPO_NAME }} --version $VERSION --app-version $VERSION --destination charts
