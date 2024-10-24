@@ -18,7 +18,7 @@ def fetch_and_sort_people():
             all_people.extend(data['results'])
             url = data['next']  # Get the next page URL
 
-        sorted_people = sorted(all_people, key=lambda person: person['name'])  # Sort people by name
+        sorted_people = sorted(all_people, key=lambda person: person['name'])
         return sorted_people
     except requests.exceptions.RequestException as e:
         log_error(e)
