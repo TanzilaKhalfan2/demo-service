@@ -27,3 +27,5 @@ jobs:
     - name: Push Docker image to registry
       run: |
         docker push ${{ secrets.CONTAINER_REGISTRY }}/${{ github.repository }}:latest
+
+        #for
