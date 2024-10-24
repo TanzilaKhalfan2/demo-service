@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, Mock
 from app.services import fetch_and_sort_people, fetch_person
 
+
 class TestServices(unittest.TestCase):
 
     @patch('app.services.requests.get')
@@ -40,6 +41,7 @@ class TestServices(unittest.TestCase):
 
         # Check the results
         self.assertEqual(result['name'], 'Luke Skywalker')
+
 
 if __name__ == '__main__':
     unittest.main()
