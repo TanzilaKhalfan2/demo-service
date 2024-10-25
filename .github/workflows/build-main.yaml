@@ -29,9 +29,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest requests
-        wget https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -O /usr/local/bin/yq
-        chmod +x /usr/local/bin/yq
+        pip install flake8 pytest requests yq
 
     - name: Lint code
       run: |
@@ -46,8 +44,8 @@ jobs:
 
     - name: Update Helm values.yaml
       run: |
-        yq eval '.image.repository = "\(env(REGISTRY_NAME))/\(env(REPO_NAME))"' -i charts/demo-bmw-microservice/values.yaml
-        yq eval '.image.tag = "\(env(GITHUB_RUN_NUMBER))"' -i charts/demo-bmw-microservice/values.yaml
+        yq w -i charts/demo-bmw-microservice/values.yaml image.repository "${REGISTRY_NAME}/${REPO_NAME}"
+        yq w -i charts/demo-bmw-microservice/values.yaml image.tag "${GITHUB_RUN_NUMBER}"
       shell: /usr/bin/bash -e {0}
       env:
         REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
