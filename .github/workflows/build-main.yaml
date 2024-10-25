@@ -8,6 +8,7 @@ on:
 
 env:
   REGISTRY_NAME: tanzilakhalfan
+  REPO_NAME: $(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
 jobs:
   build:
@@ -17,9 +18,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Extract repository name
-      id: vars
-      run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+    # - name: Extract repository name
+    #   id: vars
+    #   run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Set up Python
       uses: actions/setup-python@v2
