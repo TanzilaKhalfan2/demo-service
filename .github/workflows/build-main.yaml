@@ -53,30 +53,6 @@ jobs:
         push: true
         tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
 
-    # - name: Build Docker image
-    #   run: |
-    #     docker build -t ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }} .
-
-    # - name: Push Docker image to registry
-    #   run: |
-    #     docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
-    
-    # - name: Install Helm
-    #   uses: azure/setup-helm@v4
-    
-    # - name: Package Helm chart
-    #   run: |
-    #     VERSION=${{ github.run_number }}
-    #     helm package charts/${{ env.REPO_NAME }} --version $VERSION --app-version $VERSION --destination charts
-    
-    # - name: Index Helm chart
-    #   run: |
-    #     helm repo index charts --url https://tanzilakhalfan2.github.io/demo-bmw-microservice/
-    
-    # - name: List files
-    #   run: |
-    #     ls -l charts
-    #     cat charts/index.yaml
   helmpackage:
     # needs: build
     permissions:
