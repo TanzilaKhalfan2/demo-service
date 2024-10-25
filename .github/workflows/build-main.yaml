@@ -41,8 +41,8 @@ jobs:
     
     - name: Update Helm values.yaml
       run: |
-        yq eval '.image.repository = "${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}"' -i charts/demo-bmw-microservice/values.yaml
-        yq eval '.image.tag = "${{ github.run_number }}"' -i charts/demo-bmw-microservice/values.yaml
+        yq eval '.image.repository = strenv(REGISTRY_NAME) + "/" + strenv(REPO_NAME)' -i charts/demo-bmw-microservice/values.yaml
+        yq eval '.image.tag = strenv(GITHUB_RUN_NUMBER)' -i charts/demo-bmw-microservice/values.yaml
     
     - name: List updated values.yaml
       run: |
