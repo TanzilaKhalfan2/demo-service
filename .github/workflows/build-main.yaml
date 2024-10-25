@@ -109,7 +109,7 @@ jobs:
           rm -rf .cr-release-packages
           mkdir -p .cr-release-packages
           
-          helm package charts/${{ env.REPO_NAME }} --version ${VERSION} --app-version ${VERSION} --destination .cr-release-packages
+          helm package charts/${{ env.REPO_NAME }} --version ${VERSION} --set image.tag ${VERSION} --set image.repository ${{ env.REPO_NAME }} --app-version ${VERSION} --destination .cr-release-packages
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
