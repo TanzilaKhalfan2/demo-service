@@ -5,7 +5,7 @@ kind create cluster --name bmw-demo
 # Set the kubeconfig context
 kubectl cluster-info --context kind-bmw-demo
 # Load the Docker image into the Kind cluster
-kind load docker-image bmw-microservice:latest --name bmw-demo
+# kind load docker-image bmw-microservice:latest --name bmw-demo
 # Add the Helm chart repository
 # helm repo add bmwCharts https://tanzilakhalfan2.github.io/demo-bmw-microservice/
 # Update the Helm chart repository
