@@ -46,8 +46,12 @@ jobs:
       run: |
         IMAGE_REPOSITORY="${REGISTRY_NAME}/${REPO_NAME}"
         IMAGE_TAG="${GITHUB_RUN_NUMBER}"
-        yq w -i charts/demo-bmw-microservice/values.yaml "image.repository" "$IMAGE_REPOSITORY"
-        yq w -i charts/demo-bmw-microservice/values.yaml "image.tag" "$IMAGE_TAG"
+        
+        # Update the repository in values.yaml
+        yq w -i charts/demo-bmw-microservice/values.yaml 'image.repository' "$IMAGE_REPOSITORY"
+
+        # Update the tag in values.yaml
+        yq w -i charts/demo-bmw-microservice/values.yaml 'image.tag' "$IMAGE_TAG"
       shell: /usr/bin/bash -e {0}
       env:
         REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
