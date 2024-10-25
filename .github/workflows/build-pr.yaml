@@ -3,7 +3,6 @@ name: PR Build
 # Trigger this workflow when a pull request is opened, synchronized, or reopened
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
 
 env:
   REGISTRY_NAME: tanzilakhalfan
