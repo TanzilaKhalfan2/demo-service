@@ -45,13 +45,21 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PAT }}
 
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }} .
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v6.9.0
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
 
-    - name: Push Docker image to registry
-      run: |
-        docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
+    # - name: Build Docker image
+    #   run: |
+    #     docker build -t ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }} .
+
+    # - name: Push Docker image to registry
+    #   run: |
+    #     docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
     
     # - name: Install Helm
     #   uses: azure/setup-helm@v4
@@ -89,8 +97,19 @@ jobs:
         uses: azure/setup-helm@v4
         env:
           GITHUB_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
+      
+      - name: Package Helm chart
+        run: |
+          VERSION=${{ github.ref_name }}
+
+          rm -rf .cr-release-packages
+          mkdir -p .cr-release-packages
+          
+          helm package charts/${{ env.REPO_NAME }} --version ${VERSION:1} --app-version ${VERSION:1} --destination .cr-release-packages
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
+        with:
+          skip_packaging: true
         env:
           CR_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
