@@ -43,6 +43,11 @@ jobs:
       run: |
         yq eval '.image.repository = strenv(REGISTRY_NAME) + "/" + strenv(REPO_NAME)' -i charts/demo-bmw-microservice/values.yaml
         yq eval '.image.tag = strenv(GITHUB_RUN_NUMBER)' -i charts/demo-bmw-microservice/values.yaml
+      shell: /usr/bin/bash -e {0}
+      env:
+        REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
+        REPO_NAME: ${{ env.REPO_NAME }}
+        GITHUB_RUN_NUMBER: ${{ github.run_number }}
     
     - name: List updated values.yaml
       run: |
