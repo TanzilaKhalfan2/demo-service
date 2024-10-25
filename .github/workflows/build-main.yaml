@@ -44,8 +44,8 @@ jobs:
 
     - name: Update Helm values.yaml
       run: |
-        yq w -i charts/demo-bmw-microservice/values.yaml image.repository "${REGISTRY_NAME}/${REPO_NAME}"
-        yq w -i charts/demo-bmw-microservice/values.yaml image.tag "${GITHUB_RUN_NUMBER}"
+        yq w -i charts/demo-bmw-microservice/values.yaml "image.repository" "${REGISTRY_NAME}/${REPO_NAME}"
+        yq w -i charts/demo-bmw-microservice/values.yaml "image.tag" "${GITHUB_RUN_NUMBER}"
       shell: /usr/bin/bash -e {0}
       env:
         REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
