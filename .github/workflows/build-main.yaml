@@ -10,8 +10,7 @@ env:
   REGISTRY_NAME: tanzilakhalfan
 
 jobs:
-  build:
-  name: Build and Push Docker Image
+  DockerBuildAndPush:
     runs-on: ubuntu-latest
 
     steps:
@@ -56,8 +55,7 @@ jobs:
         push: true
         tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
 
-  helmpackage:
-    name: Package Helm chart
+  PackageHelmChart:
     needs: build
     permissions:
       contents: write
