@@ -108,6 +108,10 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
       
+      - name: Validate Helm Chart
+        run: |
+          helm lint charts/demo-bmw-microservice
+      
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
