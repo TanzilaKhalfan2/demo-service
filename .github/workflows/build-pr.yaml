@@ -1,0 +1,101 @@
+name: PR Build
+
+# Trigger this workflow when a pull request is opened, synchronized, or reopened
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  REGISTRY_NAME: tanzilakhalfan
+
+jobs:
+  DockerBuildAndPush:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Extract repository name
+      id: vars
+      run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest requests
+        wget https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -O /usr/local/bin/yq
+        chmod +x /usr/local/bin/yq
+
+    - name: Lint code
+      run: |
+        flake8 .
+
+    - name: Run tests
+      run: |
+        python -m unittest discover -s app/unit-tests -p "test_*.py"
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PAT }}
+
+    - name: Build Docker images
+      uses: docker/build-push-action@v6.9.0
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
+
+  PackageHelmChart:
+    needs: DockerBuildAndPush
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Extract repository name
+        id: vars
+        run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      
+      - name: Check yq version
+        run: yq --version
+
+      - name: Update Helm values.yaml
+        run: |
+          IMAGE_REPOSITORY="${REGISTRY_NAME}/${REPO_NAME}"
+          IMAGE_TAG="${GITHUB_RUN_NUMBER}"
+
+          yq eval ".image.repository = \"${IMAGE_REPOSITORY}\"" -i charts/demo-bmw-microservice/values.yaml
+          yq eval ".image.tag = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/values.yaml
+
+          yq eval ".name = \"${REPO_NAME}\"" -i charts/demo-bmw-microservice/Chart.yaml
+          yq eval ".version = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/Chart.yaml
+          yq eval ".appVersion = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/Chart.yaml
+        shell: bash
+        env:
+          REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
+          REPO_NAME: ${{ env.REPO_NAME }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      
+    
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
+      
+      - name: Validate Helm Chart
+        run: |
+          helm lint charts/demo-bmw-microservice
