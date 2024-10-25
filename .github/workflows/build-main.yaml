@@ -53,19 +53,44 @@ jobs:
       run: |
         docker push ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
     
-    - name: Install Helm
-      uses: azure/setup-helm@v4
+    # - name: Install Helm
+    #   uses: azure/setup-helm@v4
     
-    - name: Package Helm chart
-      run: |
-        VERSION=${{ github.run_number }}
-        helm package charts/${{ env.REPO_NAME }} --version $VERSION --app-version $VERSION --destination charts
+    # - name: Package Helm chart
+    #   run: |
+    #     VERSION=${{ github.run_number }}
+    #     helm package charts/${{ env.REPO_NAME }} --version $VERSION --app-version $VERSION --destination charts
     
-    - name: Index Helm chart
-      run: |
-        helm repo index charts --url https://tanzilakhalfan2.github.io/demo-bmw-microservice/
+    # - name: Index Helm chart
+    #   run: |
+    #     helm repo index charts --url https://tanzilakhalfan2.github.io/demo-bmw-microservice/
     
-    - name: List files
-      run: |
-        ls -l charts
-        cat charts/index.yaml
+    # - name: List files
+    #   run: |
+    #     ls -l charts
+    #     cat charts/index.yaml
+  helmpackage:
+    needs: build
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.6.0
+        env:
+          CR_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
