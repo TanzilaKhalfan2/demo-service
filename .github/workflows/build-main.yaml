@@ -80,6 +80,10 @@ jobs:
 
           yq eval ".image.repository = \"${IMAGE_REPOSITORY}\"" -i charts/demo-bmw-microservice/values.yaml
           yq eval ".image.tag = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/values.yaml
+
+          yq eval ".name = \"${REPO_NAME}\"" -i charts/demo-bmw-microservice/Chart.yaml
+          yq eval ".version = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/Chart.yaml
+          yq eval ".appVersion = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/Chart.yaml
         shell: bash
         env:
           REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
@@ -89,6 +93,10 @@ jobs:
       - name: List updated values.yaml
         run: |
           cat charts/demo-bmw-microservice/values.yaml
+      
+      - name: List updated Chart.yaml
+        run: |
+          cat charts/demo-bmw-microservice/Chart.yaml
           
       - name: Configure Git
         run: |
