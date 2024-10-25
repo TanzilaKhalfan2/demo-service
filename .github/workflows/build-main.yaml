@@ -17,19 +17,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v3
-      with:
-        # list of Docker images to use as base name for tags
-        images: |
-          gmorse81/go-rest-api-kubernetes-example
-        # generate Docker tags based on the following events/attributes
-        tags: |
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-
     - name: Extract repository name
       id: vars
       run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
@@ -64,7 +51,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
 
     # - name: Build Docker image
     #   run: |
@@ -117,10 +104,11 @@ jobs:
       
       - name: Package Helm chart
         run: |
-          VERSION=${{github.ref_name}}
+          VERSION=${{ github.run_number }}
+
           rm -rf .cr-release-packages
           mkdir -p .cr-release-packages
-          helm package charts/${{ env.REPO_NAME }} --app-version=${VERSION:1} --version=${VERSION:1} --destination=.cr-release-packages
+          helm package charts/${{ env.REPO_NAME }} --app-version=${VERSION} --version=${VERSION} --destination=.cr-release-packages
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
