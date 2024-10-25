@@ -78,7 +78,7 @@ jobs:
     #     ls -l charts
     #     cat charts/index.yaml
   helmpackage:
-    needs: build
+    # needs: build
     permissions:
       contents: write
     runs-on: ubuntu-latest
