@@ -56,7 +56,7 @@ jobs:
         tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
 
   PackageHelmChart:
-    needs: build
+    needs: DockerBuildAndPush
     permissions:
       contents: write
     runs-on: ubuntu-latest
