@@ -46,14 +46,8 @@ jobs:
 
     - name: Update Helm values.yaml
       run: |
-        IMAGE_REPOSITORY="${REGISTRY_NAME}/${REPO_NAME}"
-        IMAGE_TAG="${GITHUB_RUN_NUMBER}"
-        
-        # Update the repository in values.yaml
-        yq w -i 'image.repository' "$IMAGE_REPOSITORY" charts/demo-bmw-microservice/values.yaml
-
-        # Update the tag in values.yaml
-        yq w -i 'image.tag' "$IMAGE_TAG" charts/demo-bmw-microservice/values.yaml
+        yq eval '.image.repository = "\(env(REGISTRY_NAME))/\(env(REPO_NAME))"' -i charts/demo-bmw-microservice/values.yaml
+        yq eval '.image.tag = "\(env(GITHUB_RUN_NUMBER))"' -i charts/demo-bmw-microservice/values.yaml
       shell: /usr/bin/bash -e {0}
       env:
         REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
