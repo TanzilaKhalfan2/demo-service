@@ -115,5 +115,6 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         with:
           skip_packaging: true
+          skip-existing: true
         env:
           CR_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
