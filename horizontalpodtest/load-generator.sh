@@ -2,7 +2,7 @@
 
 # Set the Kubernetes namespace and service details
 NAMESPACE="default"
-SERVICE_NAME="demo-bmw-microservice"
+SERVICE_NAME="demo-microservice"
 SERVICE_PORT="80"
 
 # Get the ClusterIP address of the service

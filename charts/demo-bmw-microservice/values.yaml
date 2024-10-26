@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image:
-  repository: demo-bmw-microservice
+  repository: demo-microservice
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"

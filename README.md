@@ -94,8 +94,8 @@ curl http://localhost:5000/people
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/TanzilaKhalfan2/demo-bmw-microservice.git
-   cd demo-bmw-microservice
+   git clone https://github.com/TanzilaKhalfan2/demo-microservice.git
+   cd demo-microservice
    ```
 
 

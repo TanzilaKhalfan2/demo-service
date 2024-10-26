@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "demo-bmw-microservice.fullname" . }}
+  name: {{ include "demo-microservice.fullname" . }}
   labels:
-    {{- include "demo-bmw-microservice.labels" . | nindent 4 }}
+    {{- include "demo-microservice.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "demo-bmw-microservice.selectorLabels" . | nindent 4 }}
+    {{- include "demo-microservice.selectorLabels" . | nindent 4 }}

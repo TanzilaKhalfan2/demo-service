@@ -34,12 +34,12 @@
 #!/bin/bash
 
 # Variables
-CLUSTER_NAME="bmw-demo"
-HELM_REPO_NAME="bmwCharts"
-HELM_REPO_URL="https://tanzilakhalfan2.github.io/demo-bmw-microservice/"
-HELM_CHART_NAME="demo-bmw-microservice"
+CLUSTER_NAME="m-demo"
+HELM_REPO_NAME="mCharts"
+HELM_REPO_URL="https://tanzilakhalfan2.github.io/demo-microservice/"
+HELM_CHART_NAME="demo-microservice"
 HELM_CHART_VERSION=""
-DOCKER_IMAGE_NAME="demo-bmw-microservice:latest"
+DOCKER_IMAGE_NAME="demo-microservice:latest"
 
 # Function to build Docker image
 build_docker_image() {

@@ -1,6 +1,6 @@
 1. Get the application URL by running these commands:
 {{- if contains "ClusterIP" .Values.service.type }}
-  export SERVICE_PORT=$(kubectl get svc demo-bmw-microservice --namespace default -o jsonpath="{.spec.ports[0].port}")
-  kubectl --namespace default port-forward service/demo-bmw-microservice 8080:$SERVICE_PORT
+  export SERVICE_PORT=$(kubectl get svc demo-microservice --namespace default -o jsonpath="{.spec.ports[0].port}")
+  kubectl --namespace default port-forward service/demo-microservice 8080:$SERVICE_PORT
   echo "Visit http://127.0.0.1:8080 to use your application"
 {{- end }}

@@ -2,12 +2,12 @@
 
 ## Overview
 
-This script is a Bash script that creates a load generator to simulate HTTP requests to a Kubernetes service named `demo-bmw-microservice`. The load generator runs inside a Kubernetes cluster, using a `busybox` pod to make continuous HTTP calls to the service, enabling you to monitor and observe the scaling behavior of your horizontal pod autoscaler.
+This script is a Bash script that creates a load generator to simulate HTTP requests to a Kubernetes service named `demo-microservice`. The load generator runs inside a Kubernetes cluster, using a `busybox` pod to make continuous HTTP calls to the service, enabling you to monitor and observe the scaling behavior of your horizontal pod autoscaler.
 
 ## Prerequisites
 
 - You have `kubectl` configured and connected to your Kubernetes cluster.
-- The service (`demo-bmw-microservice`) is deployed in the Kubernetes cluster.
+- The service (`demo-microservice`) is deployed in the Kubernetes cluster.
 - Kubernetes namespace where the service is running (default is `default`).
 
 ## Script Explanation
@@ -15,7 +15,7 @@ This script is a Bash script that creates a load generator to simulate HTTP requ
 The script performs the following steps:
 
 1. **Set Service Details:**
-   - Defines the Kubernetes namespace (`NAMESPACE`) and the service name (`SERVICE_NAME`) for which the load will be generated. The default namespace is set to `default`, and the service name is `demo-bmw-microservice`.
+   - Defines the Kubernetes namespace (`NAMESPACE`) and the service name (`SERVICE_NAME`) for which the load will be generated. The default namespace is set to `default`, and the service name is `demo-microservice`.
 
 2. **Get ClusterIP Address:**
    - Retrieves the `ClusterIP` address of the Kubernetes service using the `kubectl get svc` command. The `ClusterIP` address is needed for making HTTP requests to the service.
@@ -70,7 +70,7 @@ kubectl delete pod busybox-load-generator
 
 ## Troubleshooting
 
-- **Could not determine ClusterIP address:** Ensure that the service `demo-bmw-microservice` is correctly deployed and accessible in the specified namespace.
+- **Could not determine ClusterIP address:** Ensure that the service `demo-microservice` is correctly deployed and accessible in the specified namespace.
 - **Load Generator Pod Fails to Start:** Check the pod status using:
 
   ```sh

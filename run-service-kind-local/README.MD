@@ -1,6 +1,6 @@
-# Demo BMW Microservice - Local Setup Guide
+# Demo Microservice - Local Setup Guide
 
-This guide will help you set up the **Demo BMW Microservice** locally using Kind, Helm, and Docker.
+This guide will help you set up the **Demo Microservice** locally using Kind, Helm, and Docker.
 
 ## Prerequisites
 Before running the microservice, you need to install the dependencies. The dependencies include Kind, Helm, and kubectl.
@@ -32,10 +32,10 @@ After installing the dependencies, proceed to run the service.
 
    This script will:
    - Build the Docker image for the service.
-   - Create a Kind cluster named **bmw-demo**.
+   - Create a Kind cluster named **m-demo**.
    - Set the kubeconfig context to use the newly created cluster.
    - Add the Helm chart repository, update it, and list available Helm charts.
-   - Upgrade or install the **demo-bmw-microservice** Helm chart.
+   - Upgrade or install the **demo-microservice** Helm chart.
 
 ## Script Details
 ### install_dependencies.sh
@@ -56,9 +56,9 @@ The `run.sh` script performs the following actions:
 - **upgrade_helm_chart**: Upgrades or installs the Helm chart for the microservice.
 
 ## Additional Information
-- **Cluster Name**: The default Kind cluster name is **bmw-demo**.
-- **Helm Chart Repository**: The default Helm chart repository name is **bmwCharts**.
-- **Docker Image**: The Docker image built by the script is named **demo-bmw-microservice:latest**.
+- **Cluster Name**: The default Kind cluster name is **m-demo**.
+- **Helm Chart Repository**: The default Helm chart repository name is **mCharts**.
+- **Docker Image**: The Docker image built by the script is named **demo-microservice:latest**.
 
 Ensure Docker is running on your system before executing these scripts, as it is required for both building the Docker image and running the Kind cluster.
 

@@ -76,12 +76,12 @@ jobs:
           IMAGE_REPOSITORY="${REGISTRY_NAME}/${REPO_NAME}"
           IMAGE_TAG="${GITHUB_RUN_NUMBER}"
 
-          yq eval ".image.repository = \"${IMAGE_REPOSITORY}\"" -i charts/demo-bmw-microservice/values.yaml
-          yq eval ".image.tag = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/values.yaml
+          yq eval ".image.repository = \"${IMAGE_REPOSITORY}\"" -i charts/demo-microservice/values.yaml
+          yq eval ".image.tag = \"${IMAGE_TAG}\"" -i charts/demo-microservice/values.yaml
 
-          yq eval ".name = \"${REPO_NAME}\"" -i charts/demo-bmw-microservice/Chart.yaml
-          yq eval ".version = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/Chart.yaml
-          yq eval ".appVersion = \"${IMAGE_TAG}\"" -i charts/demo-bmw-microservice/Chart.yaml
+          yq eval ".name = \"${REPO_NAME}\"" -i charts/demo-microservice/Chart.yaml
+          yq eval ".version = \"${IMAGE_TAG}\"" -i charts/demo-microservice/Chart.yaml
+          yq eval ".appVersion = \"${IMAGE_TAG}\"" -i charts/demo-microservice/Chart.yaml
         shell: bash
         env:
           REGISTRY_NAME: ${{ env.REGISTRY_NAME }}
@@ -97,4 +97,4 @@ jobs:
       
       - name: Validate Helm Chart
         run: |
-          helm lint charts/demo-bmw-microservice
+          helm lint charts/demo-microservice
