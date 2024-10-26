@@ -149,12 +149,12 @@ jobs:
       - name: Add Helm repository
         run: |
           helm repo add ${{ vars.HELM_REPO_NAME }} ${{ vars.HELM_REPO_URL }}
-          helm repo update
       
       - name: Check Helm chart availability
         id: check_chart
         run: |
           for i in {1..3}; do
+            helm repo update
             if helm search repo ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }} --version ${{ github.run_number }}; then
               echo "Helm chart found."
               exit 0
@@ -168,6 +168,7 @@ jobs:
 
       - name: Deploy Helm chart
         run: |
+          helm repo update
           helm upgrade --install ${{ env.REPO_NAME }} ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }} --version ${{ github.run_number }}
 
 
