@@ -150,6 +150,21 @@ jobs:
         run: |
           helm repo add ${{ vars.HELM_REPO_NAME }} ${{ vars.HELM_REPO_URL }}
           helm repo update
+      
+      - name: Check Helm chart availability
+        id: check_chart
+        run: |
+          for i in {1..3}; do
+            if helm search repo ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }} --version ${{ github.run_number }}; then
+              echo "Helm chart found."
+              exit 0
+            else
+              echo "Helm chart not found. Retrying in 30 seconds..."
+              sleep 30
+            fi
+          done
+          echo "Helm chart not available in the repo. Trigger job again."
+          exit 1
 
       - name: Deploy Helm chart
         run: |
