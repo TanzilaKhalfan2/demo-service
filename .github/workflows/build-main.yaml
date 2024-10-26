@@ -158,7 +158,7 @@ jobs:
 
       # Add a delay to give the Helm repository index time to be updated
       - name: Wait for Helm repository index update
-        run: sleep 15
+        run: sleep 40
 
       # Update Helm repo to ensure the latest index is used
       - name: Update Helm repository
