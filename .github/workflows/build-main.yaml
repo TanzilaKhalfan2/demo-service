@@ -122,53 +122,51 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
+      # Extract the repository name from the GitHub repository
       - name: Extract repository name
         id: vars
         run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
+      # Set up kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
-
+      
+      # Log in to Azure
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      
+      # Set up AKS
       - name: Set up AKS
         run: |
           az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
 
+      # Install Helm
       - name: Install Helm
         uses: azure/setup-helm@v4
         env:
           GITHUB_TOKEN: "${{ secrets.GIT_HUB_TOKEN }}"
       
+      # Add Helm repository
       - name: Add Helm repository
         run: |
           helm repo add ${{ vars.HELM_REPO_NAME }} ${{ vars.HELM_REPO_URL }}
-      
-      - name: Check Helm chart availability
-        id: check_chart
-        run: |
-          for i in {1..3}; do
-            helm repo update
-            if helm search repo ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }} --version ${{ github.run_number }}; then
-              echo "Helm chart found."
-              exit 0
-            else
-              echo "Helm chart not found. Retrying in 30 seconds..."
-              sleep 30
-            fi
-          done
-          echo "Helm chart not available in the repo. Trigger job again."
-          exit 1
 
+      # Add a delay to give the Helm repository index time to be updated
+      - name: Wait for Helm repository index update
+        run: sleep 15
+
+      # Update Helm repo to ensure the latest index is used
+      - name: Update Helm repository
+        run: helm repo update
+
+      # Deploy Helm chart
       - name: Deploy Helm chart
         run: |
-          helm repo update
           helm upgrade --install ${{ env.REPO_NAME }} ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }} --version ${{ github.run_number }}
 
 
