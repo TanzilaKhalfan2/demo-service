@@ -153,6 +153,6 @@ jobs:
 
       - name: Deploy Helm chart
         run: |
-          helm install ${{ env.REPO_NAME }} ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }}
+          helm upgrade --install ${{ env.REPO_NAME }} ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }}
 
 
