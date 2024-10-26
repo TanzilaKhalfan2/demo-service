@@ -6,6 +6,13 @@ HELM_REPO_NAME="bmwCharts"
 HELM_REPO_URL="https://tanzilakhalfan2.github.io/demo-bmw-microservice/"
 HELM_CHART_NAME="demo-bmw-microservice"
 HELM_CHART_VERSION=""
+DOCKER_IMAGE_NAME="demo-bmw-microservice:latest"
+
+# Function to build Docker image
+build_docker_image() {
+  echo "Building Docker image '$DOCKER_IMAGE_NAME'..."
+  docker build -t "$DOCKER_IMAGE_NAME" . || { echo "Failed to build Docker image"; exit 1; }
+}
 
 # Function to create Kind cluster
 create_kind_cluster() {
@@ -55,13 +62,19 @@ search_helm_charts() {
 upgrade_helm_chart() {
   echo "Upgrading or installing Helm chart '$HELM_CHART_NAME'..."
   if [ -z "$HELM_CHART_VERSION" ]; then
-    helm upgrade --install "$HELM_CHART_NAME" "$HELM_REPO_NAME/$HELM_CHART_NAME" || { echo "Failed to upgrade/install Helm chart"; exit 1; }
+    echo "Upgrading or installing Helm chart '$HELM_CHART_NAME' from local directory..."
+    # Load the Docker image into the Kind cluster
+    kind load docker-image $DOCKER_IMAGE_NAME --name $CLUSTER_NAME
+    # Install the Helm chart from the local directory
+    helm upgrade --install "$HELM_CHART_NAME" "./charts/$HELM_CHART_NAME" -f "./charts/$HELM_CHART_NAME/values.yaml" || { echo "Failed to upgrade/install Helm chart"; exit 1; }
   else
+    echo "Upgrading or installing Helm chart '$HELM_CHART_NAME' from repo '$HELM_REPO_NAME'..."
     helm upgrade --install "$HELM_CHART_NAME" "$HELM_REPO_NAME/$HELM_CHART_NAME" --version "$HELM_CHART_VERSION" || { echo "Failed to upgrade/install Helm chart"; exit 1; }
   fi
 }
 
 # Main script execution
+build_docker_image
 create_kind_cluster
 set_kubeconfig_context
 add_helm_repo
