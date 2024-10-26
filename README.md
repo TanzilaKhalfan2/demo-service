@@ -1,100 +1,113 @@
-# BMW Microservice
+# Demo  Microservice
 
-This project is a microservice for BMW, built using Flask and deployed using Helm on Kubernetes.
+## Overview
+
+The **Demo  Microservice** is designed to interact with the [Star Wars API (SWAPI)](https://swapi.dev/). The primary objective of this microservice is to demonstrate proficiency in software development, containerization, orchestration, and performance optimization. It is implemented in Python following an architectural design pattern, and it fetches, sorts, and returns data from SWAPI's people endpoint.
+
+The solution is provided as a public GitHub repository, showcasing various aspects of software engineering, including error handling, logging, and container orchestration.
+
+## Features
+
+- **SWAPI Integration**: Consumes the people endpoint from SWAPI to fetch data related to Star Wars characters.
+- **Data Sorting**: Fetches and sorts data in ascending order based on the `name` attribute.
+- **Custom Endpoint**: Provides a RESTful endpoint that returns the sorted data.
+- **Error Handling**: Implements comprehensive error handling to manage issues such as API failures and incorrect parameters.
+
+## Architecture
+
+The microservice follows a modular architectural design pattern, separating responsibilities into different components to ensure maintainability and scalability. It is structured as follows:
+
+- **Controllers**: Handle incoming HTTP requests and manage routing.
+- **Services**: Contain business logic and interact with SWAPI or other data sources.
+- **Utilities**: Helper functions for common tasks, such as data transformations and validation.
+- **Tests**: Unit tests to verify the behavior of the services and utilities.
+
+The architecture leverages containerization for deployment, ensuring the service can be easily orchestrated using Docker or Kubernetes.
 
 ## Project Structure
 
-## Getting Started
+The project is organized as follows:
+
+```
+DEMO-MICROSERVICE/
+|
+├── .github/workflows/
+│   ├── build-main.yaml
+│   └── build-pr.yaml
+|
+├── app/
+│   ├── unit-tests/
+│   ├── __init__.py
+│   ├── controllers.py
+│   ├── models.py
+│   ├── services.py
+│   ├── utils.py
+│   └── README.MD
+|
+├── charts/demo-microservice/
+│   ├── templates/
+│   ├── .helmignore
+│   ├── Chart.yaml
+│   └── values.yaml
+|
+├── horizontalpodtest/
+│   ├── load-generator.sh
+│   └── README.md
+|
+├── run-service-kind-local/
+│   ├── prerequisites
+│   ├── README.md
+│   └── run.sh
+|
+├── Dockerfile
+├── main.py
+├── README.md
+└── requirements.txt
+```
+
+## Usage
+
+### Endpoints
+
+The microservice provides several RESTful endpoints for interacting with SWAPI data. Below are the key endpoints:
+
+- `GET /`: Retrieve the status of the microservice.
+- `GET /people`: Retrieve a sorted list of people from SWAPI.
+- `GET /people/<int:id>`: Retrieve information about a specific person by their ID from SWAPI.
+
+Example usage:
+
+```bash
+curl http://localhost:5000/people
+```
+
+## Setup and Installation
 
 ### Prerequisites
 
-- Python 3.9
+- Python 3.8+
 - Docker
-- Kubernetes
-- Helm
+- [SWAPI](https://swapi.dev/) (for integration purposes)
 
-### Installation
+### Installation Steps
 
-1. **Clone the repository:**
+1. **Clone the repository**:
 
-    ```sh
-    git clone <repository-url>
-    cd demo-bmw-microservice
-    ```
+   ```bash
+   git clone https://github.com/TanzilaKhalfan2/demo-bmw-microservice.git
+   cd demo-bmw-microservice
+   ```
 
-2. **Install Python dependencies:**
 
-    ```sh
-    pip install -r requirements.txt
-    ```
+## Deployment
 
-3. **Build Docker image:**
+### Local Deployment Using Kind Cluster
+To deploy the microservice locally, navigate to the `run-service-kind-local` folder based on the above Project Structure and follow the instructions in the `README.md` file.
 
-    ```sh
-    docker build -t bmw-microservice .
-    ```
+### Automated Deployment Using GitHub Actions
+You can also deploy the microservice using GitHub Actions workflows available in the `.github/workflows/` folder.
 
-4. **Setup Kubernetes cluster using Kind:**
+## Contact
 
-    ```sh
-    ./setup-kind/install_kind.sh
-    ```
-
-5. **Load the Docker Image into kind:**
-
-    ```sh
-    kind load docker-image bmw-microservice:latest --name kind-bmw-demo
-    ```
-
-6. **Deploy using Helm:**
-
-    ```sh
-    helm install demo-bmw-svc ./demo-bmw-svc
-    ```
-
-7. **PORT Forward to get the application URL by running these commands:**
-    
-    ```sh
-    export SERVICE_PORT=$(kubectl get svc demo-bmw-microservice --namespace default -o jsonpath="{.spec.ports[0].port}")
-    kubectl --namespace default port-forward service/demo-bmw-microservice 8080:$SERVICE_PORT
-    ```
-
-### Deploy  helm chart locally
-    
-1. **Add Helm chart repo locally:**
-
-    ```sh
-    helm repo add bmwCharts https://tanzilakhalfan2.github.io/demo-bmw-microservice/
-    
-    helm repo update
-    ```
-
-2. **List Helm Chart repo:**
-
-    ```sh
-    helm repo list
-    ```
-
-3. **To list all charts available Helm repository, you can use the following command:**
-
-    ```sh
-    helm search repo bmwCharts
-    ```
-
-4. **If you want more details about this chart, you can use:**
-
-    ```sh
-    helm show chart bmwCharts/demo-bmw-microservice
-    ```
-
-5. **To upgrade (or install, if not already installed) your Helm chart, you can use the following command:**
-
-    ```sh
-    helm upgrade --install demo-bmw-microservice bmwCharts/demo-bmw-microservice --values <values-file>
-    ```
-    or
-    ```sh
-    helm upgrade --install demo-bmw-microservice bmwCharts/demo-bmw-microservice 
-    ```
-
+For any issues or inquiries, please contact [TanzilaKhalfan2](https://github.com/TanzilaKhalfan2) on GitHub.
 
