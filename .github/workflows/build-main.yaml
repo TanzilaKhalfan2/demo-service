@@ -157,10 +157,6 @@ jobs:
         run: |
           helm repo add ${{ vars.HELM_REPO_NAME }} ${{ vars.HELM_REPO_URL }}
 
-      # Add a delay to give the Helm repository index time to be updated
-      - name: Wait for Helm repository index update
-        run: sleep 40
-
       # Update Helm repo to ensure the latest index is used
       - name: Update Helm repository
         run: helm repo update
