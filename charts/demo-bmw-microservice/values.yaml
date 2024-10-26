@@ -18,11 +18,17 @@ service:
   port: 80
   targetPort: 80
 
-resources: {}
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
 
 autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 50
