@@ -1,24 +1,71 @@
 #!/bin/bash
 
-# Create kind cluster
-kind create cluster --name bmw-demo
-# Set the kubeconfig context
-kubectl cluster-info --context kind-bmw-demo
-# Load the Docker image into the Kind cluster
-# kind load docker-image bmw-microservice:latest --name bmw-demo
-# Add the Helm chart repository
-# helm repo add bmwCharts https://tanzilakhalfan2.github.io/demo-bmw-microservice/
-# Update the Helm chart repository
-helm repo update
-# List the Helm chart repositories
-helm repo list
-# Search for the Helm chart
-helm search repo bmwCharts
-# Search for the Helm chart versions
-helm search repo bmwCharts/demo-bmw-microservice --versions
-# Show the Helm chart
-helm show chart bmwCharts/demo-bmw-microservice
-# Install Helm chart to Kind cluster
-helm upgrade --install demo-bmw-microservice bmwCharts/demo-bmw-microservice 
-# or
-# helm upgrade demo-bmw-microservice ./charts/demo-bmw-microservice --install
+# Variables
+CLUSTER_NAME="bmw-demo"
+HELM_REPO_NAME="bmwCharts"
+HELM_REPO_URL="https://tanzilakhalfan2.github.io/demo-bmw-microservice/"
+HELM_CHART_NAME="demo-bmw-microservice"
+HELM_CHART_VERSION=""
+
+# Function to create Kind cluster
+create_kind_cluster() {
+  if kind get clusters | grep -q "$CLUSTER_NAME"; then
+    echo "Kind cluster '$CLUSTER_NAME' already exists."
+  else
+    echo "Creating Kind cluster '$CLUSTER_NAME'..."
+    kind create cluster --name "$CLUSTER_NAME" || { echo "Failed to create Kind cluster"; exit 1; }
+  fi
+}
+
+# Function to set kubeconfig context
+set_kubeconfig_context() {
+  echo "Setting kubeconfig context to 'kind-$CLUSTER_NAME'..."
+  kubectl cluster-info --context "kind-$CLUSTER_NAME" || { echo "Failed to set kubeconfig context"; exit 1; }
+}
+
+# Function to add Helm chart repository
+add_helm_repo() {
+  if helm repo list | grep -q "$HELM_REPO_NAME"; then
+    echo "Helm repo '$HELM_REPO_NAME' already exists."
+  else
+    echo "Adding Helm repo '$HELM_REPO_NAME'..."
+    helm repo add "$HELM_REPO_NAME" "$HELM_REPO_URL" || { echo "Failed to add Helm repo"; exit 1; }
+  fi
+}
+
+# Function to update Helm chart repository
+update_helm_repo() {
+  echo "Updating Helm repo '$HELM_REPO_NAME'..."
+  helm repo update || { echo "Failed to update Helm repo"; exit 1; }
+}
+
+# Function to list Helm chart repositories
+list_helm_repos() {
+  echo "Listing Helm repos..."
+  helm repo list || { echo "Failed to list Helm repos"; exit 1; }
+}
+
+# Function to search for Helm charts
+search_helm_charts() {
+  echo "Searching for Helm charts in repo '$HELM_REPO_NAME'..."
+  helm search repo "$HELM_REPO_NAME" || { echo "Failed to search Helm charts"; exit 1; }
+}
+
+# Function to upgrade or install Helm chart
+upgrade_helm_chart() {
+  echo "Upgrading or installing Helm chart '$HELM_CHART_NAME'..."
+  if [ -z "$HELM_CHART_VERSION" ]; then
+    helm upgrade --install "$HELM_CHART_NAME" "$HELM_REPO_NAME/$HELM_CHART_NAME" || { echo "Failed to upgrade/install Helm chart"; exit 1; }
+  else
+    helm upgrade --install "$HELM_CHART_NAME" "$HELM_REPO_NAME/$HELM_CHART_NAME" --version "$HELM_CHART_VERSION" || { echo "Failed to upgrade/install Helm chart"; exit 1; }
+  fi
+}
+
+# Main script execution
+create_kind_cluster
+set_kubeconfig_context
+add_helm_repo
+update_helm_repo
+list_helm_repos
+search_helm_charts
+upgrade_helm_chart

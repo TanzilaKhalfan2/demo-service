@@ -59,7 +59,7 @@ This project is a microservice for BMW, built using Flask and deployed using Hel
     kubectl --namespace default port-forward service/demo-bmw-microservice 8080:$SERVICE_PORT
     ```
 
-### Deploy on local
+### Deploy  helm chart locally
     
 1. **Add Helm chart repo locally:**
 
