@@ -148,14 +148,11 @@ jobs:
       
       - name: Add Helm repository
         run: |
-          helm repo add ${HELM_REPO_NAME} ${HELM_REPO_URL}
+          helm repo add ${{ vars.HELM_REPO_NAME }} ${{ vars.HELM_REPO_URL }}
           helm repo update
 
       - name: Deploy Helm chart
         run: |
-          helm install ${HELM_REPO_NAME} ${HELM_REPO_NAME}/${{ env.REPO_NAME }} --namespace development --create-namespace
-        env:
-          HELM_REPO_URL: ${{ vars.HELM_REPO_URL }}
-          HELM_REPO_NAME: ${{ vars.HELM_REPO_NAME }}
+          helm install ${{ env.REPO_NAME }} ${{ vars.HELM_REPO_NAME }}/${{ env.REPO_NAME }}
 
 
