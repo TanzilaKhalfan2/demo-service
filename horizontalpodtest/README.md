@@ -79,3 +79,13 @@ kubectl delete pod busybox-load-generator
 
   This command will help you identify potential issues with the pod startup, such as image pull errors or network issues.
 
+## Results:
+```sh
+kubectl get hpa -n default --watch
+```
+![Load Generator Diagram](../horizontalpodtest/horizontalpodtest.png)
+
+```sh
+kubectl get pods
+```
+![Load Generator Diagram](../horizontalpodtest/horizontalpodtest-getpods.png)
