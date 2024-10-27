@@ -48,7 +48,7 @@ jobs:
     - name: Build Docker images
       uses: docker/build-push-action@v6.9.0
       with:
-        context: .
+        context: ./run-service-kind-local/Dockerfile
         file: ./Dockerfile
         push: false
         tags: ${{ env.REGISTRY_NAME }}/${{ env.REPO_NAME }}:${{ github.run_number }}
