@@ -10,6 +10,7 @@ Before running the microservice, you need to install the dependencies. The depen
 2. Run the following script to install dependencies:
 
    ```sh
+   cd ./run-service-kind-local/prerequisites
    chmod +x ./install_dependencies.sh
    ./install_dependencies.sh
    ```
@@ -22,7 +23,7 @@ Before running the microservice, you need to install the dependencies. The depen
 ### Run the Service
 After installing the dependencies, proceed to run the service.
 
-1. Navigate to the `run-service-kind-local` directory.
+1. Navigate to the `demo-microservice` directory.
 2. Run the following script to create the Kind cluster, build the Docker image, and deploy the service:
 
    ```sh

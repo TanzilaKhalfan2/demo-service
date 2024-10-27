@@ -37,7 +37,8 @@ DEMO-MICROSERVICE/
 |
 ├── app/
 │   ├── unit-tests/
-│   ├── __init__.py
+│   │   ├── test_services.py
+│   │   └── __init__.py
 │   ├── controllers.py
 │   ├── models.py
 │   ├── services.py
@@ -54,15 +55,14 @@ DEMO-MICROSERVICE/
 │   ├── load-generator.sh
 │   └── README.md
 |
-├── run-service-kind-local/
-│   ├── prerequisites
-│   ├── README.md
-│   └── run.sh
+├── prerequisites/
+│   ├── install_dependencies.sh
 |
 ├── Dockerfile
 ├── main.py
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── run.sh
 ```
 
 ## Usage
@@ -99,13 +99,35 @@ curl http://localhost:5000/people
    ```
 
 
+
 ## Deployment
 
 ### Local Deployment Using Kind Cluster
-To deploy the microservice locally, navigate to the `run-service-kind-local` folder based on the above Project Structure and follow the instructions in the `README.md` file.
+
+To deploy the microservice locally, follow the README file in `run-service-kind-local/README.MD`.
 
 ### Automated Deployment Using GitHub Actions
-You can also deploy the microservice using GitHub Actions workflows available in the `.github/workflows/` folder.
+
+The microservice includes a pull request (PR) feature, which triggers a build once a PR is merged into the main or develop branch. The GitHub Actions workflows are available in the `.github/workflows/` folder.
+
+**You can view the GitHub Actions runs at: https://github.com/TanzilaKhalfan2/demo-microservice/actions**
+
+**You can view the Release at this location: https://github.com/TanzilaKhalfan2/demo-microservice/releases**
+
+Key points of the automated build process:
+
+- **Pull Request Feature**: When a PR is opened, the workflows run checks to validate the changes.
+- **Merge to Main or Develop Branch**: Upon merging the PR, the build is automatically triggered.
+- **Build Process Summary**:
+  - **Set up Environment**: Extract repository details and set up Python.
+  - **Linting and Testing**: Run `flake8` for code linting and unit tests using `unittest`.
+  - **Docker Build and Push**: Build the Docker image and push it to Docker Hub.
+  - **Helm Packaging**: Update Helm `values.yaml` and `Chart.yaml` and package the chart.
+  - **Deployment to Dev Environment**: Deploy the microservice to the development environment using Azure Kubernetes Service (AKS).
+- **Pull Request Feature**: When a PR is opened, the workflows run checks to validate the changes.
+- **Merge to Main Branch**: Upon merging the PR, the build is automatically triggered.
+- **Build Process**: The build includes steps such as code linting, running unit tests, building a Docker image, and deploying the Helm chart.
+
 
 ## Contact
 
