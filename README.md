@@ -108,7 +108,7 @@ To deploy the microservice locally, follow the README file in `run-service-kind-
 
 ### Automated Deployment Using GitHub Actions
 
-The microservice includes a pull request (PR) feature, which triggers a build once a PR is merged into the main or develop branch. The GitHub Actions workflows are available in the `.github/workflows/` folder.
+The microservice includes a pull request (PR) feature, which triggers a build once a PR is merged into the main branch. The GitHub Actions workflows are available in the `.github/workflows/` folder.
 
 **You can view the GitHub Actions runs at: https://github.com/TanzilaKhalfan2/demo-microservice/actions**
 
@@ -117,7 +117,7 @@ The microservice includes a pull request (PR) feature, which triggers a build on
 Key points of the automated build process:
 
 - **Pull Request Feature**: When a PR is opened, the workflows run checks to validate the changes.
-- **Merge to Main or Develop Branch**: Upon merging the PR, the build is automatically triggered.
+- **Merge to Main Branch**: Upon merging the PR, the build is automatically triggered.
 - **Build Process Summary**:
   - **Set up Environment**: Extract repository details and set up Python.
   - **Linting and Testing**: Run `flake8` for code linting and unit tests using `unittest`.
