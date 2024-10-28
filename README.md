@@ -125,6 +125,8 @@ Key points of the automated build process:
   - **Helm Packaging**: Update Helm `values.yaml` and `Chart.yaml` and package the chart.
   - **Deployment to Dev Environment**: Deploy the microservice to the development environment using Azure Kubernetes Service (AKS).
 
+## Performance and Scaling:
+Follow the README file in `horizontalpodtest/README.md`.
 
 ## Contact
 
