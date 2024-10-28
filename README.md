@@ -78,7 +78,7 @@ The microservice provides several RESTful endpoints for interacting with SWAPI d
 Example usage:
 
 ```bash
-curl http://localhost:5000/people
+curl http://localhost:8080/people
 ```
 
 ## Setup and Installation
@@ -115,7 +115,7 @@ The microservice includes a pull request (PR) feature, which triggers a build on
 **You can view the Release at this location: https://github.com/TanzilaKhalfan2/demo-microservice/releases**
 
 Key points of the automated build process:
-
+- **Build Deploy Process**: The build includes steps such as code linting, running unit tests, building a Docker image, and deploying the Helm chart.
 - **Pull Request Feature**: When a PR is opened, the workflows run checks to validate the changes.
 - **Merge to Main Branch**: Upon merging the PR, the build is automatically triggered.
 - **Build Process Summary**:
@@ -124,9 +124,6 @@ Key points of the automated build process:
   - **Docker Build and Push**: Build the Docker image and push it to Docker Hub.
   - **Helm Packaging**: Update Helm `values.yaml` and `Chart.yaml` and package the chart.
   - **Deployment to Dev Environment**: Deploy the microservice to the development environment using Azure Kubernetes Service (AKS).
-- **Pull Request Feature**: When a PR is opened, the workflows run checks to validate the changes.
-- **Merge to Main Branch**: Upon merging the PR, the build is automatically triggered.
-- **Build Process**: The build includes steps such as code linting, running unit tests, building a Docker image, and deploying the Helm chart.
 
 
 ## Contact
