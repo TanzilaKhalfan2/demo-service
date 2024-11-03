@@ -1,0 +1,50 @@
+# Helm
+
+helm show chart mCharts/demo-microservice
+helm list
+helm repo remove mCharts
+helm package demo-microservice
+
+Checkout gh-pages branch and run index command
+Index repo before push packaged chart to github:
+helm repo index . --url https://tanzilakhalfan2.github.io/demo-service/
+
+Now push packaged helm chart to github branch gh-pages by git add . git commit git push
+
+
+# Deploy helm chart
+helm repo add svcCharts https://tanzilakhalfan2.github.io/demo-service/
+
+Load all the charts after adding locally:
+helm repo update
+
+List all charts in a repo:
+helm search repo svcCharts
+
+# Connecting to AKS cluster
+az login --use-device-code
+az account set --subscription 1ec9b583-0d70-4546-b5e6-d8bb5ca8b13c
+az aks get-credentials --resource-group demo-aks-rg --name demo-aks --overwrite-existing
+
+# Installing Helmchart 
+helm upgrade --install <release-name> <repo-name>/<chart-name>
+helm upgrade --install demo-service svcCharts/demo-microservice 
+
+
+Read this artical:
+github as helm repo: https://dev.to/boris/github-as-helm-repository-1lcf
+
+# Docker
+docker rmi $(docker images -aq)
+docker rm $(docker ps -aq)
+docker build -t tanzilakhalfan/demo-svc:v1 .
+docker run -p 8080:80 --name demo-svc-container tanzilakhalfan/demo-svc:v1
+docker login
+docker push tanzilakhalfan/demo-svc:v1
+
+# Linux
+ rm -rf ./demo-service/
+
+
+
+
